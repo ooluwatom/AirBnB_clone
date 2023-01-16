@@ -25,4 +25,6 @@ class BaseModel:
         '''Returns dictionary containing all keys/values of __dict__'''
         obj_dict = self.__dict__
         obj_dict['__class__'] = self.__class__.__name__
+        self.created_at = self.created_at.isoformat()
+        self.updated_at = self.updated_at.isoformat()
         return obj_dict
