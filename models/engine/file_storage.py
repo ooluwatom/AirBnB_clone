@@ -31,8 +31,6 @@ class FileStorage:
         '''Reload the FileStorage object from JSON file'''
         if path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
-                json_dict = json.loads(f.read())
-                for k, v in json_dict.items():
-                    self.__objects[k] = eval(v['__class__'])(**v)
-        else:
-            pass
+                self.__objects = json.loads(f.read())
+                # for k, v in json_dict.items():
+                #     self.__objects[k] = eval(v['__class__'])(**v)
