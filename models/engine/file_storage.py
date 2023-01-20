@@ -11,18 +11,18 @@ class FileStorage:
 
     def all(self):
         '''Return the dictionary __objects'''
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         '''Create a new FileStorage object'''
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
-        return FileStorage.__objects
+        return self.__objects
 
     def save(self):
         '''Save the FileStorage object to JSON file'''
-        with open(FileStorage.__file_path, mode='w', encoding='utf-8') as f:
+        with open(self.__file_path, mode='w', encoding='utf-8') as f:
             temp = {}
-            temp.update(FileStorage.__objects)
+            temp.update(self.__objects)
             for key, value in temp.items():
                 temp[key] = value.to_dict()
             json.dump(temp, f)
@@ -34,8 +34,8 @@ class FileStorage:
             'BaseModel' : BaseModel
         }
 
-        if path.exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path, 'r') as f:
+        if path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key,val in temp.items():
                     self.all()[key] = classes[val['__class__']](**val)
