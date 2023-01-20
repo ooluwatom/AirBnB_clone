@@ -6,13 +6,22 @@ import cmd
 class HBNBCommand(cmd.Cmd):
     '''The HBNB command'''
 
-    def do_quit(self, line):
+    def do_quit(self, command):
         '''Quit the program'''
-        return True
+        exit()
+
+    def help_quit(self):
+        '''Documentation for quit'''
+        print('Exits the command interpreter \n')
 
     def do_EOF(self, arg):
-        '''Exit the command interpreter'''
-        return True
+        '''Handles EOF to quit the interpreter'''
+        print()
+        exit()
+
+    def help_quit(self):
+        '''Documentation for EOF'''
+        print('Exits the command interpreter \n')
 
     def do_help(self, arg):
         '''Prints all available commands'''
