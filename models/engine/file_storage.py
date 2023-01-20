@@ -3,6 +3,11 @@
 import json
 from os import path
 
+from models.base_model import BaseModel
+classes = {
+    'BaseModel' : BaseModel
+}
+
 
 class FileStorage:
     '''FileStorage class which serialized and deserializes files'''
@@ -29,13 +34,9 @@ class FileStorage:
 
     def reload(self):
         '''Reload the FileStorage object from JSON file'''
-        from models.base_model import BaseModel
-        classes = {
-            'BaseModel' : BaseModel
-        }
 
         if path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key,val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                    self.__objects[key] = classes[val['__class__']](**val)
