@@ -2,6 +2,7 @@
 
 import json
 from os import path
+
 from models.base_model import BaseModel
 
 
@@ -30,8 +31,13 @@ class FileStorage:
 
     def reload(self):
         '''Reload the FileStorage object from JSON file'''
+        from models.base_model import BaseModel
+        classes = {
+            'BaseModel' : BaseModel
+        }
+
         if path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, 'r') as f:
-                self.__objects = json.loads(f.read())
-                # for k, v in json_dict.items():
-                #     self.__objects[k] = eval(v['__class__'])(**v)
+                temp = json.load(f)
+                for key,val in temp.items():
+                    self.all()[key] = classes[val['__class__']](**val)
