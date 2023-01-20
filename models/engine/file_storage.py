@@ -3,8 +3,6 @@
 import json
 from os import path
 
-from models.base_model import BaseModel
-
 
 class FileStorage:
     '''FileStorage class which serialized and deserializes files'''
@@ -13,12 +11,12 @@ class FileStorage:
 
     def all(self):
         '''Return the dictionary __objects'''
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         '''Create a new FileStorage object'''
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
-        return self.__objects
+        return FileStorage.__objects
 
     def save(self):
         '''Save the FileStorage object to JSON file'''
