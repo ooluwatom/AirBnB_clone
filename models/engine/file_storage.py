@@ -7,7 +7,7 @@ from os import path
 class FileStorage:
     '''FileStorage class which serialized and deserializes files'''
     def __init__(self):
-        self.__file_path = 'objects.json'
+        self.__file_path = 'file.json'
         self.__objects = {}
 
     def all(self):
