@@ -40,14 +40,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, class_name):
         '''Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id'''
-        bm1 = BaseModel()
-        bm1.save()
-        if not class_name:
+        command = self.parseline(class_name)[0]
+        if command is None:
             print('** class name missing **')
-        elif class_name not in HBNBCommand.classes:
+        elif command not in self.classes:
             print("** class doesn't exist **")
         else:
-            print(bm1.id)
+            new_obj = eval(command)()
+            new_obj.save()
+            print(new_obj.id)
 
     def help_create(self):
         print("Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id\n")
@@ -95,23 +96,17 @@ class HBNBCommand(cmd.Cmd):
     def __hash__(self) -> int:
         print("Deletes an instance based on the class name and id (save the change into the JSON file)")
 
-    def do_all(self, args):
+    def do_all(self, line):
         '''Prints all string representation of all instances based or not on the class name'''
-        new = args.partition(' ')
-        class_name = new[0]
-        list = []
-        if not class_name:
-            for key in storage._FileStorage__objects:
-                list.append(storage._FileStorage__objects[key].__str__())
-            print(list)
-        if class_name:
-            if class_name in HBNBCommand.classes:
-                for key in storage._FileStorage__objects:
-                    if str(key).startswith(class_name):
-                        list.append(storage._FileStorage__objects[key].__str__())
-                print(list)
-            elif class_name not in HBNBCommand.classes:
-                print("** class doesn't exist **")
+        command = self.parseline(line)[0]
+        objs = storage.all()
+        if command is None:
+            print([str(objs[obj]) for obj in objs])
+        elif command in self.classes:
+            keys = objs.keys()
+            print([str(objs[key]) for key in keys if key.startswith(command)])
+        else:
+            print("** class doesn't exist **")
 
     def help_all(self):
         print('Prints all string representation of all instances based or not on the class name')
@@ -148,5 +143,5 @@ class HBNBCommand(cmd.Cmd):
         print('Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)')
         print('Usage: update <class name> <id> <attribute name> "<attribute value>"')
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     HBNBCommand().cmdloop()
