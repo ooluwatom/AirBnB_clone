@@ -2,7 +2,7 @@
 
 '''The cmd module'''
 import cmd
-import datetime
+from datetime import datetime
 import shlex
 from models.base_model import BaseModel
 from models import storage
@@ -51,23 +51,22 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         print("Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id\n")
 
-    def do_show(self, args):
+    def do_show(self, line):
         '''Prints the string representation of an instance based on the class name and id'''
-        new = args.partition (' ')
-        class_name = new[0]
-        inst_id = new[1]
-        if not class_name:
-            print("** class name missing **")
-        elif class_name not in HBNBCommand.classes:
+        command = self.parseline(line)[0]
+        arg = self.parseline(line)[1]
+        if command is None:
+            print('** class name missing **')
+        elif command not in self.classes:
             print("** class doesn't exist **")
-        elif not inst_id:
-            print("** instance id missing **")
+        elif arg == '':
+            print('** instance id missing **')
         else:
-            key = class_name + "." + inst_id
-            try:
-                print(storage._FileStorage__objects[key])
-            except KeyError:
-                print("** no instance found **")
+            inst_data = storage.all().get(command + '.' + arg)
+            if inst_data is None:
+                print('** no instance found **')
+            else:
+                print(inst_data)
 
     def help_show(self):
         print('Prints the string representation of an instance based on the class name and id')
@@ -135,7 +134,10 @@ class HBNBCommand(cmd.Cmd):
             elif args_size == 3:
                 print('** value missing **')
             else:
-                args[3] = self.analyze_parameter_value(args[3])
+                if args[3].isdigit():
+                    return int(args[3])
+                elif args[3].replace('.', '', 1).isdigit():
+                    return float(args[3])
                 setattr(inst_data, args[2], args[3])
                 setattr(inst_data, 'updated_at', datetime.now())
                 storage.save()
@@ -144,5 +146,3 @@ class HBNBCommand(cmd.Cmd):
         print('Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)')
         print('Usage: update <class name> <id> <attribute name> "<attribute value>"')
 
-if __name__ == '__main__':
-    HBNBCommand().cmdloop()
