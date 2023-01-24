@@ -2,6 +2,8 @@
 
 '''The cmd module'''
 import cmd
+import datetime
+import shlex
 from models.base_model import BaseModel
 from models import storage
 
@@ -113,45 +115,30 @@ class HBNBCommand(cmd.Cmd):
     def help_all(self):
         print('Prints all string representation of all instances based or not on the class name')
 
-    def do_update(self, args):
+    def do_update(self, line):
         '''Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)'''
-        new = args.partition(' ')
-        class_name = new[0]
-        inst_id = new[1]
-        attr_name = new[2]
-        attr_value = new[3]
-        if not class_name:
+        args = shlex.split(line)
+        args_size = len(args)
+        if args_size == 0:
             print('** class name missing **')
-        if class_name not in HBNBCommand.classes:
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
-        if not inst_id:
+        elif args_size == 1:
             print('** instance id missing **')
-        key = class_name + "." + inst_id
-        if key not in storage.all():
-            print('** no instance found **')
-
-        #retrieve dictionary of attributes
-        new_dict = storage.all()[key]
-
-        #iterate through attributes names and values
-        for i, attr_name in enumerate(args):
-            #block only runs on even iterations
-            if (i % 2) == 0:
-                attr_value = args[i + 1] #following item is value
-                if not attr_name:
-                    print ('** attribute name missing **')
-                    return
-                if not attr_value:
-                    print('** value missing **')
-                    return
-                #type cast
-                if attr_name in HBNBCommand.types:
-                    attr_value = HBNBCommand.types[attr_name](attr_value)
-
-                #update dictionary with name, value pair
-                new_dict.__dict__.update({attr_name : attr_value})
-
-        new_dict.save() #saves updates to file
+        else:
+            key = args[0] + '.' + args[1]
+            inst_data = storage.all().get(key)
+            if inst_data is None:
+                print('** no instance found **')
+            elif args_size == 2:
+                print('** attribute name missing **')
+            elif args_size == 3:
+                print('** value missing **')
+            else:
+                args[3] = self.analyze_parameter_value(args[3])
+                setattr(inst_data, args[2], args[3])
+                setattr(inst_data, 'updated_at', datetime.now())
+                storage.save()
 
     def help_update(self):
         print('Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)')
