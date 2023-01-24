@@ -81,12 +81,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif not inst_id:
             print("** instance id missing **")
-        key = class_name + "." + inst_id
-        try:
-            del storage.all()[key]
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
+        else:
+            key = class_name + "." + inst_id
+            try:
+                del storage.all()[key]
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
     
     def __hash__(self) -> int:
         print("Deletes an instance based on the class name and id (save the change into the JSON file)")
