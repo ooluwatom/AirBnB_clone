@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 class User(BaseModel):
     '''The User class'''
     def __init__(self):
-        self.email = ''
-        self.password = ''
-        self.first_name = ''
-        self.last_name = ''
+        User.email = ''
+        User.password = ''
+        User.first_name = ''
+        User.last_name = ''
