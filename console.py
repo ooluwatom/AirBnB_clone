@@ -71,24 +71,25 @@ class HBNBCommand(cmd.Cmd):
     def help_show(self):
         print('Prints the string representation of an instance based on the class name and id')
 
-    def do_destroy(self, args):
+    def do_destroy(self, line):
         '''Deletes an instance based on the class name and id (save the change into the JSON file)'''
-        new = args.partition (' ')
-        class_name = new[0]
-        inst_id = new[1]
-        if not class_name:
-            print("** class name missing **")
-        elif class_name not in HBNBCommand.classes:
+        command = self.parseline(line)[0]
+        arg = self.parseline(line)[1]
+        if command is None:
+            print('** class name missing **')
+        elif command not in self.classes:
             print("** class doesn't exist **")
-        elif not inst_id:
-            print("** instance id missing **")
+        elif arg == '':
+            print('** instance id missing **')
         else:
-            key = class_name + "." + inst_id
-            try:
+            key = command + '.' + arg
+            inst_data = storage.all().get(key)
+            if inst_data is None:
+                print('** no instance found **')
+            else:
                 del storage.all()[key]
                 storage.save()
-            except KeyError:
-                print("** no instance found **")
+
     
     def __hash__(self) -> int:
         print("Deletes an instance based on the class name and id (save the change into the JSON file)")
@@ -146,3 +147,5 @@ class HBNBCommand(cmd.Cmd):
         print('Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)')
         print('Usage: update <class name> <id> <attribute name> "<attribute value>"')
 
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
