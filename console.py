@@ -60,12 +60,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif not inst_id:
             print("** instance id missing **")
-        else:
-            key = class_name + "." + inst_id
-            try:
-                print(storage._FileStorage__objects[key])
-            except KeyError:
-                print("** no instance found **")
+        key = class_name + "." + inst_id
+        try:
+            print(storage._FileStorage__objects[key])
+        except KeyError:
+            print("** no instance found **")
 
     def help_show(self):
         print('Prints the string representation of an instance based on the class name and id')
