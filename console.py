@@ -19,13 +19,13 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb) '
     classes = {
-        "BaseModel" : BaseModel,
-        "User" : User,
-        'Place' : Place,
-        'State' : State,
-        'City' : City,
-        'Amenity' : Amenity,
-        'Review' : Review
+        "BaseModel": BaseModel,
+        "User": User,
+        'Place': Place,
+        'State': State,
+        'City': City,
+        'Amenity': Amenity,
+        'Review': Review
     }
 
     def do_quit(self, command):
@@ -50,7 +50,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, class_name):
-        '''Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id'''
+        '''Creates a new instance of BaseModel, saves \
+it (to the JSON file) and prints the id'''
         command = self.parseline(class_name)[0]
         if command is None:
             print('** class name missing **')
@@ -62,10 +63,12 @@ class HBNBCommand(cmd.Cmd):
             print(new_obj.id)
 
     def help_create(self):
-        print("Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id\n")
+        print("Creates a new instance of BaseModel, \
+saves it (to the JSON file) and prints the id\n")
 
     def do_show(self, line):
-        '''Prints the string representation of an instance based on the class name and id'''
+        '''Prints the string representation of an instance based on the class \
+name and id'''
         command = self.parseline(line)[0]
         arg = self.parseline(line)[1]
         if command is None:
@@ -82,10 +85,12 @@ class HBNBCommand(cmd.Cmd):
                 print(inst_data)
 
     def help_show(self):
-        print('Prints the string representation of an instance based on the class name and id')
+        print('Prints the string representation of an \
+instance based on the class name and id')
 
     def do_destroy(self, line):
-        '''Deletes an instance based on the class name and id (save the change into the JSON file)'''
+        '''Deletes an instance based on the class name and \
+id (save the change into the JSON file)'''
         command = self.parseline(line)[0]
         arg = self.parseline(line)[1]
         if command is None:
@@ -103,12 +108,13 @@ class HBNBCommand(cmd.Cmd):
                 del storage.all()[key]
                 storage.save()
 
-    
     def __hash__(self) -> int:
-        print("Deletes an instance based on the class name and id (save the change into the JSON file)")
+        print("Deletes an instance based on the class \
+name and id (save the change into the JSON file)")
 
     def do_all(self, line):
-        '''Prints all string representation of all instances based or not on the class name'''
+        '''Prints all string representation of all instances based or not \
+on the class name'''
         command = self.parseline(line)[0]
         objs = storage.all()
         if command is None:
@@ -120,10 +126,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def help_all(self):
-        print('Prints all string representation of all instances based or not on the class name')
+        print('Prints all string representation of all \
+instances based or not on the class name')
 
     def do_update(self, line):
-        '''Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)'''
+        '''Updates an instance based on the class name and id by adding or \
+updating attribute (save the change into the JSON file)'''
         args = shlex.split(line)
         args_size = len(args)
         if args_size == 0:
@@ -151,8 +159,11 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def help_update(self):
-        print('Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)')
-        print('Usage: update <class name> <id> <attribute name> "<attribute value>"')
+        print('Updates an instance based on the class name and id by adding \
+or updating attribute (save the change into the JSON file)')
+        print('Usage: update <class name> <id> <attribute \
+name> "<attribute value>"')
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

@@ -12,13 +12,13 @@ from models.amenity import Amenity
 from models.review import Review
 
 classes = {
-    'BaseModel' : BaseModel,
-    'User' : User,
-    'Place' : Place,
-    'State' : State,
-    'City' : City,
-    'Amenity' : Amenity,
-    'Review' : Review
+    "BaseModel": BaseModel,
+    "User": User,
+    'Place': Place,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Review': Review
 }
 
 
@@ -51,5 +51,5 @@ class FileStorage:
         if path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
-                for key,val in temp.items():
+                for key, val in temp.items():
                     self.__objects[key] = classes[val['__class__']](**val)
