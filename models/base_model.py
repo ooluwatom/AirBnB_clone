@@ -25,7 +25,7 @@ class BaseModel:
 
     def __str__(self):
         '''Print instance details'''
-        return (f'[{__class__.__name__}] ({self.id}) {self.__dict__}')
+        return (f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}')
 
     def save(self):
         '''Updates the time of update'''
